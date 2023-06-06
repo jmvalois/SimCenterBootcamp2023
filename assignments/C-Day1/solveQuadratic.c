@@ -19,14 +19,27 @@ int main(int argc, char **argv) {
     exit(-1);
   }
 
-  float a = atof(argv[1]);
-  float b = atof(argv[2]);
-  float c = atof(argv[3]);
+  double a = atof(argv[1]);
+  double b = atof(argv[2]);
+  double c = atof(argv[3]);
+  double x1 = 0, x2 = 0;
 
-  float x1 = 0, x2 = 0;
-
-  printf("%.8f, %.8f\n", x1, x2);    
-  
+  double tmp = b*b-4.0*a*c;
+  if (tmp>0){
+    tmp =sqrt(tmp);
+  }
+  if(tmp!=0 && tmp>0){
+    x1=(-b-tmp)/(2*a);
+    x2 =(-b+tmp)/(2*a);    
+    printf("%.8f, %.8f\n", x1, x2);
+  }
+  else if(tmp==0){
+    x1 = -b/(2*a);
+    printf("%.8f", x1);
+      }
+  else{
+    printf("Not Finished\n");
+  }
   return 0;
 }
 

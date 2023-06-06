@@ -20,9 +20,35 @@ void transformStress(float *stressIN, float theta, float *stressTransformed);
 
 int main(int argc, char **argv) {
 
-  double sigmaX=0, sigmaY=0, tauXY=0;
+  double sigmaX=atof(argv[1]); 
+  double sigmaY=atof(argv[2]);
+  double tauXY=atof(argv[3]);
+  float theta=atof(argv[4]);
 
-  printf("%.4f, %.4f, %.4f\n", sigmaX, sigmaY, tauXY);
+  float ArrayStressIn[3], stressTransformed[3];
+  ArrayStressIn[0]=sigmaX;
+  ArrayStressIn[1]=sigmaY;
+  ArrayStressIn[2]=tauXY;
+
+  transformStress(ArrayStressIn, theta, stressTransformed);
+
+  printf("%.4f, %.4f, %.4f\n", stressTransformed[0], stressTransformed[1], stressTransformed[2]);
   return 0;
 }
 
+void transformStress(float *stressIN, float theta, float *stressTransformed){
+  float sigmaX = stressIN[0];
+  float sigmaY = stressIN[1];
+  float tauXY = stressIN[2];
+
+  float theta_rad = theta*M_PI/180;
+
+  float sigmaX_prime = sigmaX*pow((cos(theta_rad)),2) + sigmaY*pow((sin(theta_rad)),2) +2*tauXY*(sin(theta_rad))*(cos(theta_rad));
+  float sigmaY_prime = sigmaX*pow((sin(theta_rad)),2) + sigmaY*pow((cos(theta_rad)),2) - 2*tauXY*(sin(theta_rad))*(cos(theta_rad));
+  float tauXY_prime = (sigmaY-sigmaX)*sin(theta_rad)*cos(theta_rad) + tauXY*pow((cos(theta_rad)),2)-pow((sin(theta_rad)),2);
+
+  stressTransformed[0] = sigmaX_prime;
+  stressTransformed[1] = sigmaY_prime;
+  stressTransformed[2] = tauXY_prime;
+
+}
